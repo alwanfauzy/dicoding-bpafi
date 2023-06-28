@@ -1,74 +1,40 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 abstract class Styles {
-  //colors
-  static const Color whiteColor = Colors.white;
-  static const Color blackColor = Colors.black;
-  static const Color orangeColor = Colors.orange;
-  static const Color redColor = Colors.red;
-  static const Color darkRedColor = Color(0xFFB71C1C);
-  static const Color purpleColor = Color(0xff5E498A);
-  static const Color darkThemeColor = Color(0xff33333E);
-  static const Color grayColor = Color(0xff797979);
-  static const Color greyColorLight = Color(0xffd7d7d7);
-  static const Color settingsBackground = Color(0xffefeff4);
-  static const Color settingsGroupSubtitle = Color(0xff777777);
-  static const Color iconBlue = Color(0xff0000ff);
-  static const Color transparent = Colors.transparent;
-  static const Color iconGold = Color(0xffdba800);
-  static const Color bottomBarSelectedColor = Color(0xff5e4989);
-
-  //Strings
-  static const TextStyle defaultTextStyle = TextStyle(
-    color: Styles.purpleColor,
-    fontSize: 20.0,
-  );
-  static const TextStyle defaultTextStyleBlack = TextStyle(
-    color: Styles.blackColor,
-    fontSize: 20.0,
-  );
-  static const TextStyle defaultTextStyleGRey = TextStyle(
-    color: Styles.grayColor,
-    fontSize: 20.0,
-  );
-  static const TextStyle smallTextStyleGRey = TextStyle(
-    color: Styles.grayColor,
-    fontSize: 16.0,
-  );
-  static const TextStyle smallTextStyle = TextStyle(
-    color: Styles.purpleColor,
-    fontSize: 16.0,
-  );
-  static const TextStyle smallTextStyleWhite = TextStyle(
-    color: Styles.whiteColor,
-    fontSize: 16.0,
-  );
-  static const TextStyle smallTextStyleBlack = TextStyle(
-    color: Styles.blackColor,
-    fontSize: 16.0,
-  );
-  static const TextStyle defaultButtonTextStyle = TextStyle(
-    color: Styles.whiteColor,
-    fontSize: 20,
+  static TextTheme textTheme = TextTheme(
+    displayLarge: GoogleFonts.mavenPro(
+        fontSize: 103, fontWeight: FontWeight.w300, letterSpacing: -1.5),
+    displayMedium: GoogleFonts.mavenPro(
+        fontSize: 64, fontWeight: FontWeight.w300, letterSpacing: -0.5),
+    displaySmall:
+        GoogleFonts.mavenPro(fontSize: 51, fontWeight: FontWeight.w400),
+    headlineMedium: GoogleFonts.mavenPro(
+        fontSize: 36, fontWeight: FontWeight.w400, letterSpacing: 0.25),
+    headlineSmall:
+        GoogleFonts.mavenPro(fontSize: 26, fontWeight: FontWeight.w400),
+    titleLarge: GoogleFonts.mavenPro(
+        fontSize: 21, fontWeight: FontWeight.w500, letterSpacing: 0.15),
+    titleMedium: GoogleFonts.mavenPro(
+        fontSize: 17, fontWeight: FontWeight.w400, letterSpacing: 0.15),
+    titleSmall: GoogleFonts.mavenPro(
+        fontSize: 15, fontWeight: FontWeight.w500, letterSpacing: 0.1),
+    bodyLarge: GoogleFonts.sourceSansPro(
+        fontSize: 17, fontWeight: FontWeight.w400, letterSpacing: 0.5),
+    bodyMedium: GoogleFonts.sourceSansPro(
+        fontSize: 15, fontWeight: FontWeight.w400, letterSpacing: 0.25),
+    labelLarge: GoogleFonts.sourceSansPro(
+        fontSize: 15, fontWeight: FontWeight.w500, letterSpacing: 1.25),
+    bodySmall: GoogleFonts.sourceSansPro(
+        fontSize: 13, fontWeight: FontWeight.w400, letterSpacing: 0.4),
+    labelSmall: GoogleFonts.sourceSansPro(
+        fontSize: 11, fontWeight: FontWeight.w400, letterSpacing: 1.5),
   );
 
-  static const TextStyle profileTextStyleBlack = TextStyle(
-    color: Styles.blackColor,
-    fontSize: 20.0,
-  );
-
-  static const TextStyle defaultTextStyleWhite = TextStyle(
-    color: Styles.whiteColor,
-    fontSize: 20.0,
-  );
-  static const TextStyle messageRecipientTextStyle = TextStyle(
-      color: Styles.blackColor, fontSize: 16.0, fontWeight: FontWeight.bold);
-
+  // TODO: Implement ColorScheme
   static ThemeData themeData(bool isDarkTheme, BuildContext context) {
     return ThemeData(
-      //* Custom Google Font
-      //  fontFamily: Devfest.google_sans_family,
-      primarySwatch: Colors.red,
+      textTheme: textTheme,
       primaryColor: isDarkTheme ? Colors.black : Colors.white,
       backgroundColor: isDarkTheme ? Colors.black : const Color(0xffF1F5FB),
       indicatorColor:

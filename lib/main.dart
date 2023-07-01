@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:json_theme/json_theme.dart';
-import 'package:story_ku/ui/login_page.dart';
+import 'package:story_ku/ui/login/login_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

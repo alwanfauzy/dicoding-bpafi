@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:story_ku/ui/login/register_modal_bottom_sheet.dart';
+import 'package:story_ku/util/form_validator.dart';
 import 'package:story_ku/widget/primary_button.dart';
 import 'package:story_ku/widget/safe_scaffold.dart';
 import 'package:story_ku/widget/secondary_button.dart';
-import 'package:validators/validators.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -14,6 +15,21 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    // WidgetsBinding.instance.addPostFrameCallback((_) => _onRegisterPressed());
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _emailController.dispose();
+    _passwordController.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -53,7 +69,7 @@ class _LoginPageState extends State<LoginPage> {
           "alwanfauzy © 2023",
           style: Theme.of(context).textTheme.labelMedium,
         ),
-        const SizedBox(height: 8),
+        const SizedBox(height: 16),
       ],
     );
   }
@@ -65,28 +81,28 @@ class _LoginPageState extends State<LoginPage> {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           TextFormField(
-            controller: TextEditingController(),
+            controller: _emailController,
             decoration: InputDecoration(
               labelText: "Email",
               border:
                   OutlineInputBorder(borderRadius: BorderRadius.circular(5.0)),
             ),
-            validator: _validateEmail,
+            validator: validateEmail,
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: 8),
           TextFormField(
-            controller: TextEditingController(),
+            controller: _passwordController,
             decoration: InputDecoration(
               labelText: "Password",
               border:
                   OutlineInputBorder(borderRadius: BorderRadius.circular(5.0)),
             ),
-            validator: _validatePassword,
+            validator: validatePassword,
           ),
           const SizedBox(height: 16),
           PrimaryButton(text: "Login", onPressed: _onLoginPressed),
           const SizedBox(height: 8),
-          SecondaryButton(onPressed: () {}, text: "Register"),
+          SecondaryButton(text: "Register", onPressed: _onRegisterPressed),
         ],
       ),
     );
@@ -96,10 +112,10 @@ class _LoginPageState extends State<LoginPage> {
     if (_formKey.currentState?.validate() == true) {}
   }
 
-  String? _validateEmail(String? value) =>
-      !isEmail(value.toString()) ? "Invalid Email Format" : null;
-
-  String? _validatePassword(String? value) => (value!.length < 8)
-      ? "Password must contains minimum 8 characters"
-      : null;
+  _onRegisterPressed() {
+    showModalBottomSheet(
+        isScrollControlled: true,
+        context: context,
+        builder: ((context) => const RegisterBottomSheet()));
+  }
 }

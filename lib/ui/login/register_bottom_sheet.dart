@@ -36,7 +36,6 @@ class _RegisterBottomSheetState extends State<RegisterBottomSheet> {
   Widget _header(BuildContext context) {
     return Column(
       children: [
-        const PillIndicator(),
         Text("Register", style: Theme.of(context).textTheme.headlineSmall),
         Text(
           "Create account to login this app",

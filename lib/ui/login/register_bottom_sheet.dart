@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:story_ku/util/form_validator.dart';
+import 'package:story_ku/widget/pill_indicator.dart';
 import 'package:story_ku/widget/primary_button.dart';
+import 'package:story_ku/widget/safe_bottom_sheet.dart';
 
 class RegisterBottomSheet extends StatefulWidget {
   const RegisterBottomSheet({super.key});
@@ -23,38 +25,32 @@ class _RegisterBottomSheetState extends State<RegisterBottomSheet> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.only(
-          left: 32,
-          right: 32,
-          top: 24,
-          bottom: 32 + MediaQuery.of(context).viewInsets.bottom),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          _registerHeader(context),
-          _registerForm(context),
-        ],
-      ),
+    return SafeBottomSheet(
+      children: [
+        _header(context),
+        _form(context),
+      ],
     );
   }
 
-  Widget _registerHeader(BuildContext context) {
+  Widget _header(BuildContext context) {
     return Column(
       children: [
-        Text("Register", style: Theme.of(context).textTheme.bodyLarge),
-        Text("Create account to login this app",
-            style: Theme.of(context).textTheme.bodySmall),
+        const PillIndicator(),
+        Text("Register", style: Theme.of(context).textTheme.headlineSmall),
+        Text(
+          "Create account to login this app",
+          style: Theme.of(context).textTheme.labelMedium,
+        ),
         const SizedBox(height: 16),
       ],
     );
   }
 
-  Widget _registerForm(BuildContext context) {
+  Widget _form(BuildContext context) {
     return Form(
       key: _formKey,
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           TextFormField(
             controller: _emailController,

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:story_ku/ui/login/register_modal_bottom_sheet.dart';
+import 'package:story_ku/ui/list_story/list_story_page.dart';
+import 'package:story_ku/ui/login/register_bottom_sheet.dart';
 import 'package:story_ku/util/form_validator.dart';
 import 'package:story_ku/widget/primary_button.dart';
 import 'package:story_ku/widget/safe_scaffold.dart';
@@ -109,13 +110,16 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   _onLoginPressed() {
-    if (_formKey.currentState?.validate() == true) {}
+    if (_formKey.currentState?.validate() == true) {
+      Navigator.push(context,
+          MaterialPageRoute(builder: (context) => const ListStoryPage()));
+    }
   }
 
-  _onRegisterPressed() {
-    showModalBottomSheet(
+  _onRegisterPressed() => showModalBottomSheet(
         isScrollControlled: true,
+        backgroundColor: Colors.transparent,
         context: context,
-        builder: ((context) => const RegisterBottomSheet()));
-  }
+        builder: ((context) => const RegisterBottomSheet()),
+      );
 }

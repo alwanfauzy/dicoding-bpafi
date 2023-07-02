@@ -16,7 +16,11 @@ class _AddStoryBottomSheetState extends State<AddStoryBottomSheet> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeBottomSheet(
+    return SafeBottomSheet(child: _body(context));
+  }
+
+  Widget _body(BuildContext context) {
+    return Column(
       children: [
         _header(context),
         _form(context),

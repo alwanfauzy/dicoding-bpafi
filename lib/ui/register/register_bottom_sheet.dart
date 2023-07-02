@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:provider/provider.dart';
+import 'package:story_ku/data/api/api_service.dart';
+import 'package:story_ku/data/model/request/register_request.dart';
+import 'package:story_ku/provider/register_provider.dart';
+import 'package:story_ku/util/enums.dart';
 import 'package:story_ku/util/form_validator.dart';
-import 'package:story_ku/widget/pill_indicator.dart';
 import 'package:story_ku/widget/primary_button.dart';
 import 'package:story_ku/widget/safe_bottom_sheet.dart';
 
@@ -25,11 +30,18 @@ class _RegisterBottomSheetState extends State<RegisterBottomSheet> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeBottomSheet(
-      children: [
-        _header(context),
-        _form(context),
-      ],
+    return SafeBottomSheet(child: _provider(context));
+  }
+
+  Widget _provider(BuildContext context) {
+    return ChangeNotifierProvider<RegisterProvider>(
+      create: (context) => RegisterProvider(ApiService()),
+      child: Column(
+        children: [
+          _header(context),
+          _form(context),
+        ],
+      ),
     );
   }
 
@@ -71,13 +83,44 @@ class _RegisterBottomSheetState extends State<RegisterBottomSheet> {
             validator: validatePassword,
           ),
           const SizedBox(height: 16),
-          PrimaryButton(text: "Register", onPressed: _onRegisterPressed),
+          Consumer<RegisterProvider>(builder: (context, provider, _) {
+            _handleRegisterState(provider);
+
+            return PrimaryButton(
+              text: "Register",
+              onPressed: () => _onRegisterPressed(provider),
+            );
+          }),
         ],
       ),
     );
   }
 
-  _onRegisterPressed() {
-    if (_formKey.currentState?.validate() == true) {}
+  _onRegisterPressed(RegisterProvider provider) {
+    if (_formKey.currentState?.validate() == true) {
+      provider.register(RegisterRequest(
+        name: "wahaha",
+        email: "wahaha123@gmail.com",
+        password: "12345678",
+      ));
+    }
+  }
+
+  _handleRegisterState(RegisterProvider provider) {
+    switch (provider.registerState) {
+      case ResultState.loading:
+        EasyLoading.show();
+        break;
+      case ResultState.hasData:
+        Navigator.pop(context);
+        break;
+      case ResultState.noData:
+      case ResultState.error:
+        EasyLoading.showError(provider.registerMessage);
+        Navigator.pop(context);
+        break;
+      default:
+        break;
+    }
   }
 }

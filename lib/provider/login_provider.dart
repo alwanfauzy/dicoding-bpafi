@@ -9,17 +9,11 @@ class LoginProvider extends ChangeNotifier {
 
   LoginProvider(this.apiService);
 
-  late ResultState _loginState;
-  late ResultState _registerState;
-
-  ResultState get loginState => _loginState;
-  ResultState get registerState => _registerState;
+  ResultState? _loginState;
+  ResultState? get loginState => _loginState;
 
   String _loginMessage = "";
-  String _registerMessage = "";
-
   String get loginMessage => _loginMessage;
-  String get registerMessage => _registerMessage;
 
   Future<dynamic> login() async {
     try {
@@ -46,37 +40,6 @@ class LoginProvider extends ChangeNotifier {
       return _loginMessage = "Error: No Internet Connection";
     } catch (e) {
       _loginState = ResultState.error;
-      notifyListeners();
-
-      return _loginMessage = "Error: $e";
-    }
-  }
-
-  Future<dynamic> register() async {
-    try {
-      _registerState = ResultState.loading;
-      notifyListeners();
-
-      final registerResult = await apiService.register();
-
-      if (registerResult.error != true) {
-        _registerState = ResultState.hasData;
-        notifyListeners();
-
-        return _registerMessage = registerResult.message ?? "Account Created";
-      } else {
-        _registerState = ResultState.noData;
-        notifyListeners();
-
-        return _registerMessage = registerResult.message ?? "Register Failed";
-      }
-    } on SocketException {
-      _registerState = ResultState.error;
-      notifyListeners();
-
-      return _loginMessage = "Error: No Internet Connection";
-    } catch (e) {
-      _registerState = ResultState.error;
       notifyListeners();
 
       return _loginMessage = "Error: $e";

@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:story_ku/widget/pill_indicator.dart';
 
 class SafeBottomSheet extends StatelessWidget {
-  final List<Widget> children;
+  final Widget child;
   final Radius radius;
 
   const SafeBottomSheet({
     super.key,
-    required this.children,
+    required this.child,
     this.radius = const Radius.circular(16),
   });
 
@@ -16,7 +16,7 @@ class SafeBottomSheet extends StatelessWidget {
     List<Widget> widgets = [];
 
     widgets.add(const PillIndicator());
-    widgets.addAll(children);
+    widgets.add(child);
 
     return SingleChildScrollView(
       child: Container(

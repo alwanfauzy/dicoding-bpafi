@@ -3,12 +3,14 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:story_ku/data/api/api_service.dart';
 import 'package:story_ku/data/model/request/login_request.dart';
+import 'package:story_ku/data/pref/token_pref.dart';
 import 'package:story_ku/util/enums.dart';
 
 class LoginProvider extends ChangeNotifier {
   final ApiService apiService;
+  final TokenPref tokenPref;
 
-  LoginProvider(this.apiService);
+  LoginProvider(this.apiService, this.tokenPref);
 
   ResultState? _loginState;
   ResultState? get loginState => _loginState;
@@ -25,6 +27,7 @@ class LoginProvider extends ChangeNotifier {
 
       if (loginResult.error != true) {
         _loginState = ResultState.hasData;
+        tokenPref.setToken(loginResult.loginResult?.token ?? "");
         notifyListeners();
 
         return _loginMessage = loginResult.message ?? "Login Success";

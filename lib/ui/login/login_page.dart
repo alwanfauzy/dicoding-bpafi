@@ -4,6 +4,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 import 'package:story_ku/data/api/api_service.dart';
 import 'package:story_ku/data/model/request/login_request.dart';
+import 'package:story_ku/data/pref/token_pref.dart';
 import 'package:story_ku/provider/login_provider.dart';
 import 'package:story_ku/ui/register/register_bottom_sheet.dart';
 import 'package:story_ku/util/enums.dart';
@@ -44,7 +45,7 @@ class _LoginPageState extends State<LoginPage> {
 
   Widget _provider(BuildContext context) {
     return ChangeNotifierProvider<LoginProvider>(
-      create: (context) => LoginProvider(ApiService()),
+      create: (context) => LoginProvider(ApiService(), TokenPref()),
       child: _body(context),
     );
   }
@@ -108,7 +109,7 @@ class _LoginPageState extends State<LoginPage> {
             obscureText: true,
             decoration: InputDecoration(
               labelText: "Password",
-              border: 
+              border:
                   OutlineInputBorder(borderRadius: BorderRadius.circular(5.0)),
             ),
             validator: validatePassword,

@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:story_ku/data/api/api_service.dart';
+import 'package:story_ku/data/model/request/login_request.dart';
 import 'package:story_ku/util/enums.dart';
 
 class LoginProvider extends ChangeNotifier {
@@ -15,12 +16,12 @@ class LoginProvider extends ChangeNotifier {
   String _loginMessage = "";
   String get loginMessage => _loginMessage;
 
-  Future<dynamic> login() async {
+  Future<dynamic> login(LoginRequest request) async {
     try {
       _loginState = ResultState.loading;
       notifyListeners();
 
-      final loginResult = await apiService.login();
+      final loginResult = await apiService.login(request);
 
       if (loginResult.error != true) {
         _loginState = ResultState.hasData;

@@ -18,6 +18,7 @@ class RegisterBottomSheet extends StatefulWidget {
 
 class _RegisterBottomSheetState extends State<RegisterBottomSheet> {
   final _formKey = GlobalKey<FormState>();
+  final _nameController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
 
@@ -64,6 +65,15 @@ class _RegisterBottomSheetState extends State<RegisterBottomSheet> {
       child: Column(
         children: [
           TextFormField(
+            controller: _nameController,
+            decoration: InputDecoration(
+              labelText: "Name",
+              border:
+                  OutlineInputBorder(borderRadius: BorderRadius.circular(5.0)),
+            ),
+          ),
+          const SizedBox(height: 8),
+          TextFormField(
             controller: _emailController,
             decoration: InputDecoration(
               labelText: "Email",
@@ -74,6 +84,7 @@ class _RegisterBottomSheetState extends State<RegisterBottomSheet> {
           ),
           const SizedBox(height: 8),
           TextFormField(
+            obscureText: true,
             controller: _passwordController,
             decoration: InputDecoration(
               labelText: "Password",
@@ -98,11 +109,7 @@ class _RegisterBottomSheetState extends State<RegisterBottomSheet> {
 
   _onRegisterPressed(RegisterProvider provider) {
     if (_formKey.currentState?.validate() == true) {
-      provider.register(RegisterRequest(
-        name: "wahaha",
-        email: "wahaha123@gmail.com",
-        password: "12345678",
-      ));
+      provider.register(_getRegisterRequest());
     }
   }
 
@@ -112,15 +119,21 @@ class _RegisterBottomSheetState extends State<RegisterBottomSheet> {
         EasyLoading.show();
         break;
       case ResultState.hasData:
+        EasyLoading.showSuccess(provider.registerMessage);
         Navigator.pop(context);
         break;
       case ResultState.noData:
       case ResultState.error:
         EasyLoading.showError(provider.registerMessage);
-        Navigator.pop(context);
         break;
       default:
         break;
     }
   }
+
+  _getRegisterRequest() => RegisterRequest(
+        name: _nameController.text,
+        email: _emailController.text,
+        password: _passwordController.text,
+      );
 }

@@ -3,8 +3,8 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 import 'package:story_ku/data/api/api_service.dart';
+import 'package:story_ku/data/model/request/login_request.dart';
 import 'package:story_ku/provider/login_provider.dart';
-import 'package:story_ku/ui/list_story/list_story_page.dart';
 import 'package:story_ku/ui/register/register_bottom_sheet.dart';
 import 'package:story_ku/util/enums.dart';
 import 'package:story_ku/util/form_validator.dart';
@@ -105,9 +105,10 @@ class _LoginPageState extends State<LoginPage> {
           const SizedBox(height: 8),
           TextFormField(
             controller: _passwordController,
+            obscureText: true,
             decoration: InputDecoration(
               labelText: "Password",
-              border:
+              border: 
                   OutlineInputBorder(borderRadius: BorderRadius.circular(5.0)),
             ),
             validator: validatePassword,
@@ -132,7 +133,9 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   _onLoginPressed(LoginProvider provider) {
-    if (_formKey.currentState?.validate() == true) provider.login();
+    if (_formKey.currentState?.validate() == true) {
+      provider.login(_getLoginRequest());
+    }
   }
 
   _onRegisterPressed() => showModalBottomSheet(
@@ -157,4 +160,9 @@ class _LoginPageState extends State<LoginPage> {
         break;
     }
   }
+
+  _getLoginRequest() => LoginRequest(
+        email: _emailController.text,
+        password: _passwordController.text,
+      );
 }

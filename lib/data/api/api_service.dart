@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:story_ku/data/model/base_response.dart';
 import 'package:story_ku/data/model/login.dart';
+import 'package:story_ku/data/model/request/login_request.dart';
 import 'package:story_ku/data/model/request/register_request.dart';
 
 class ApiService {
@@ -13,21 +14,27 @@ class ApiService {
 
   Uri _detailStoryEndpoint(String id) => Uri.parse("$_baseUrl/stories/$id");
 
-  Future<Login> login() async {
-    final response = await http.get(_loginEndpoint);
-    if (response.statusCode == 200) {
-      return Login.fromJson(json.decode(response.body));
+  Future<Login> login(LoginRequest request) async {
+    final response = await http.post(_loginEndpoint, body: request.toJson());
+    var login = Login.fromJson(json.decode(response.body));
+
+    if (_isResponseSuccess(response.statusCode)) {
+      return login;
     } else {
-      throw Exception("${response.statusCode} - ${response.body}");
+      throw Exception("${response.statusCode} - ${login.message}");
     }
   }
 
   Future<BaseResponse> register(RegisterRequest request) async {
     final response = await http.post(_registerEndpoint, body: request.toJson());
-    if (response.statusCode == 200) {
-      return BaseResponse.fromJson(json.decode(response.body));
+    var baseResponse = BaseResponse.fromJson(json.decode(response.body));
+
+    if (_isResponseSuccess(response.statusCode)) {
+      return baseResponse;
     } else {
-      throw Exception("${response.statusCode} - ${response.body}");
+      throw Exception("${response.statusCode} - ${baseResponse.message}");
     }
   }
+
+  _isResponseSuccess(int statusCode) => (statusCode >= 200 && statusCode < 300);
 }

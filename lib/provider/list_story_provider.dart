@@ -1,0 +1,55 @@
+import 'dart:io';
+
+import 'package:flutter/material.dart';
+import 'package:story_ku/data/api/api_service.dart';
+import 'package:story_ku/data/model/detail_story.dart';
+import 'package:story_ku/util/enums.dart';
+
+class ListStoryProvider extends ChangeNotifier {
+  final ApiService apiService;
+
+  ListStoryProvider(this.apiService) {
+    getStories();
+  }
+
+  ResultState? _state;
+  ResultState? get state => _state;
+
+  String _message = "";
+  String get message => _message;
+
+  final List<Story> _stories = [];
+  List<Story> get stories => _stories;
+
+  Future<dynamic> getStories() async {
+    try {
+      _state = ResultState.loading;
+      notifyListeners();
+
+      final storiesResult = await apiService.getStories();
+
+      if (storiesResult.listStory?.isNotEmpty == true) {
+        _state = ResultState.hasData;
+        _stories.addAll(storiesResult.listStory ?? List.empty());
+        notifyListeners();
+
+        return _message = storiesResult.message ?? "Get Stories Success";
+      } else {
+        _state = ResultState.noData;
+        notifyListeners();
+
+        return _message = storiesResult.message ?? "Get Stories Failed";
+      }
+    } on SocketException {
+      _state = ResultState.error;
+      notifyListeners();
+
+      return _message = "Error: No Internet Connection";
+    } catch (e) {
+      _state = ResultState.error;
+      notifyListeners();
+
+      return _message = "Error: $e";
+    }
+  }
+}

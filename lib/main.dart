@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -10,12 +11,20 @@ import 'package:story_ku/ui/login/login_page.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
+  initializeCerts();
   final theme = await initializeTheme();
   final token = await checkToken();
 
   runApp(MyApp(theme: theme, token: token));
 
   configLoading();
+}
+
+Future<void> initializeCerts() async {
+  ByteData data =
+      await PlatformAssetBundle().load('assets/ca/lets-encrypt-r3.pem');
+  SecurityContext.defaultContext
+      .setTrustedCertificatesBytes(data.buffer.asUint8List());
 }
 
 Future<ThemeData?> initializeTheme() async {

@@ -24,27 +24,23 @@ class DetailStoryProvider extends ChangeNotifier {
 
       if (detailStoryResult.story != null) {
         _state = ResultState.hasData;
-        notifyListeners();
 
-        return _message =
-            detailStoryResult.message ?? "Get Detail Story Success";
+        _message = detailStoryResult.message ?? "Get Detail Story Success";
       } else {
         _state = ResultState.noData;
-        notifyListeners();
 
-        return _message =
-            detailStoryResult.message ?? "Get Detail Story Failed";
+        _message = detailStoryResult.message ?? "Get Detail Story Failed";
       }
     } on SocketException {
       _state = ResultState.error;
-      notifyListeners();
 
-      return _message = "Error: No Internet Connection";
+      _message = "Error: No Internet Connection";
     } catch (e) {
       _state = ResultState.error;
-      notifyListeners();
 
-      return _message = "Error: $e";
+      _message = "Error: $e";
+    } finally {
+      notifyListeners();
     }
   }
 }

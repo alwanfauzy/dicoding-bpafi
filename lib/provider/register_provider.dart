@@ -25,25 +25,23 @@ class RegisterProvider extends ChangeNotifier {
 
       if (registerResult.error != true) {
         _registerState = ResultState.hasData;
-        notifyListeners();
 
-        return _registerMessage = registerResult.message ?? "Account Created";
+        _registerMessage = registerResult.message ?? "Account Created";
       } else {
         _registerState = ResultState.noData;
-        notifyListeners();
 
-        return _registerMessage = registerResult.message ?? "Register Failed";
+        _registerMessage = registerResult.message ?? "Register Failed";
       }
     } on SocketException {
       _registerState = ResultState.error;
-      notifyListeners();
 
       return _registerMessage = "Error: No Internet Connection";
     } catch (e) {
       _registerState = ResultState.error;
-      notifyListeners();
 
-      return _registerMessage = "Error: $e";
+      _registerMessage = "Error: $e";
+    } finally {
+      notifyListeners();
     }
   }
 }

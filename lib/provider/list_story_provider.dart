@@ -31,25 +31,23 @@ class ListStoryProvider extends ChangeNotifier {
       if (storiesResult.listStory?.isNotEmpty == true) {
         _state = ResultState.hasData;
         _stories.addAll(storiesResult.listStory ?? List.empty());
-        notifyListeners();
 
-        return _message = storiesResult.message ?? "Get Stories Success";
+        _message = storiesResult.message ?? "Get Stories Success";
       } else {
         _state = ResultState.noData;
-        notifyListeners();
 
-        return _message = storiesResult.message ?? "Get Stories Failed";
+        _message = storiesResult.message ?? "Get Stories Failed";
       }
     } on SocketException {
       _state = ResultState.error;
-      notifyListeners();
 
-      return _message = "Error: No Internet Connection";
+      _message = "Error: No Internet Connection";
     } catch (e) {
       _state = ResultState.error;
-      notifyListeners();
 
-      return _message = "Error: $e";
+      _message = "Error: $e";
+    } finally {
+      notifyListeners();
     }
   }
 }

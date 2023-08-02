@@ -28,25 +28,23 @@ class LoginProvider extends ChangeNotifier {
       if (loginResult.error != true) {
         _loginState = ResultState.hasData;
         tokenPref.setToken(loginResult.loginResult?.token ?? "");
-        notifyListeners();
 
-        return _loginMessage = loginResult.message ?? "Login Success";
+        _loginMessage = loginResult.message ?? "Login Success";
       } else {
         _loginState = ResultState.noData;
-        notifyListeners();
 
-        return _loginMessage = loginResult.message ?? "Login Failed";
+        _loginMessage = loginResult.message ?? "Login Failed";
       }
     } on SocketException {
       _loginState = ResultState.error;
-      notifyListeners();
 
-      return _loginMessage = "Error: No Internet Connection";
+      _loginMessage = "Error: No Internet Connection";
     } catch (e) {
       _loginState = ResultState.error;
-      notifyListeners();
 
-      return _loginMessage = "Error: $e";
+      _loginMessage = "Error: $e";
+    } finally {
+      notifyListeners();
     }
   }
 }

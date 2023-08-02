@@ -6,17 +6,14 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:json_theme/json_theme.dart';
 import 'package:story_ku/data/pref/token_pref.dart';
 import 'package:story_ku/routes/router_delegate.dart';
-import 'package:story_ku/ui/list_story/list_story_page.dart';
-import 'package:story_ku/ui/login/login_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   initializeCerts();
   final theme = await initializeTheme();
-  final token = await checkToken();
 
-  runApp(MyApp(theme: theme, token: token));
+  runApp(MyApp(theme: theme));
 
   configLoading();
 }
@@ -34,12 +31,6 @@ Future<ThemeData?> initializeTheme() async {
   final theme = ThemeDecoder.decodeThemeData(themeJson);
 
   return theme;
-}
-
-Future<String> checkToken() async {
-  var tokenPref = TokenPref();
-
-  return await tokenPref.getToken();
 }
 
 void configLoading() {
@@ -60,9 +51,8 @@ void configLoading() {
 
 class MyApp extends StatefulWidget {
   final ThemeData? theme;
-  final String token;
 
-  const MyApp({Key? key, required this.theme, required this.token})
+  const MyApp({Key? key, required this.theme})
       : super(key: key);
 
   @override

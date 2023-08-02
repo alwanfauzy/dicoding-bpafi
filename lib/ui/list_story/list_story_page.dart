@@ -5,12 +5,13 @@ import 'package:story_ku/data/model/detail_story.dart';
 import 'package:story_ku/data/pref/token_pref.dart';
 import 'package:story_ku/provider/list_story_provider.dart';
 import 'package:story_ku/ui/list_story/add_story_bottom_sheet.dart';
-import 'package:story_ku/ui/login/login_page.dart';
 import 'package:story_ku/util/enums.dart';
 import 'package:story_ku/widget/story_item.dart';
 
 class ListStoryPage extends StatefulWidget {
-  const ListStoryPage({super.key});
+  final VoidCallback onLogoutSuccess;
+
+  const ListStoryPage({super.key, required this.onLogoutSuccess});
 
   @override
   State<ListStoryPage> createState() => _ListStoryPageState();
@@ -83,11 +84,8 @@ class _ListStoryPageState extends State<ListStoryPage> {
   _onLogoutPressed() {
     var tokenPref = TokenPref();
     tokenPref.setToken("");
-    
-    // Navigator.pushReplacement(
-    //   context,
-    //   MaterialPageRoute(builder: (context) => const LoginPage()),
-    // );
+
+    widget.onLogoutSuccess();
   }
 
   _onAddStoryPressed() => showModalBottomSheet(

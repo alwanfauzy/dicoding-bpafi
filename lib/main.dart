@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:json_theme/json_theme.dart';
 import 'package:story_ku/data/pref/token_pref.dart';
+import 'package:story_ku/routes/router_delegate.dart';
 import 'package:story_ku/ui/list_story/list_story_page.dart';
 import 'package:story_ku/ui/login/login_page.dart';
 
@@ -57,7 +58,7 @@ void configLoading() {
     ..dismissOnTap = false;
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   final ThemeData? theme;
   final String token;
 
@@ -65,11 +66,28 @@ class MyApp extends StatelessWidget {
       : super(key: key);
 
   @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  late MyRouterDelegate _myRouterDelegate;
+
+  @override
+  void initState() {
+    super.initState();
+    _myRouterDelegate = MyRouterDelegate();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'StoryKu',
-      theme: theme,
-      home: (token.isEmpty) ? const LoginPage() : const ListStoryPage(),
+      theme: widget.theme,
+      // home: (widget.token.isEmpty) ? const LoginPage() : const ListStoryPage(),
+      home: Router(
+        routerDelegate: _myRouterDelegate,
+        backButtonDispatcher: RootBackButtonDispatcher(),
+      ),
       builder: EasyLoading.init(),
     );
   }

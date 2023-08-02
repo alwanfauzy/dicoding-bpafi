@@ -6,16 +6,18 @@ import 'package:story_ku/data/api/api_service.dart';
 import 'package:story_ku/data/model/request/login_request.dart';
 import 'package:story_ku/data/pref/token_pref.dart';
 import 'package:story_ku/provider/login_provider.dart';
-import 'package:story_ku/ui/list_story/list_story_page.dart';
 import 'package:story_ku/ui/register/register_bottom_sheet.dart';
 import 'package:story_ku/util/enums.dart';
 import 'package:story_ku/util/form_validator.dart';
+import 'package:story_ku/util/helper.dart';
 import 'package:story_ku/widget/primary_button.dart';
 import 'package:story_ku/widget/safe_scaffold.dart';
 import 'package:story_ku/widget/secondary_button.dart';
 
 class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
+  final VoidCallback onLoginSuccess;
+
+  const LoginPage({super.key, required this.onLoginSuccess});
 
   @override
   State<LoginPage> createState() => _LoginPageState();
@@ -121,6 +123,7 @@ class _LoginPageState extends State<LoginPage> {
 
             return PrimaryButton(
               text: "Login",
+              isLoading: (provider.loginState == ResultState.loading),
               onPressed: () => _onLoginPressed(provider),
             );
           }),
@@ -149,12 +152,8 @@ class _LoginPageState extends State<LoginPage> {
 
   _handleLoginState(LoginProvider provider) {
     switch (provider.loginState) {
-      case ResultState.loading:
-        EasyLoading.show();
-        break;
       case ResultState.hasData:
-        Navigator.pushReplacement(context,
-            MaterialPageRoute(builder: (context) => const ListStoryPage()));
+        afterBuildWidgetCallback(widget.onLoginSuccess);
         break;
       case ResultState.noData:
       case ResultState.error:

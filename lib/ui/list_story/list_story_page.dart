@@ -84,10 +84,10 @@ class _ListStoryPageState extends State<ListStoryPage> {
     var tokenPref = TokenPref();
     tokenPref.setToken("");
     
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(builder: (context) => const LoginPage()),
-    );
+    // Navigator.pushReplacement(
+    //   context,
+    //   MaterialPageRoute(builder: (context) => const LoginPage()),
+    // );
   }
 
   _onAddStoryPressed() => showModalBottomSheet(

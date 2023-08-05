@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 import 'package:story_ku/data/api/api_service.dart';
@@ -157,7 +156,6 @@ class _LoginPageState extends State<LoginPage> {
         break;
       case ResultState.noData:
       case ResultState.error:
-        EasyLoading.showError(provider.loginMessage);
         break;
       default:
         break;

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:provider/provider.dart';
 import 'package:story_ku/data/api/api_service.dart';
 import 'package:story_ku/data/model/request/register_request.dart';
@@ -116,15 +115,12 @@ class _RegisterBottomSheetState extends State<RegisterBottomSheet> {
   _handleRegisterState(RegisterProvider provider) {
     switch (provider.registerState) {
       case ResultState.loading:
-        EasyLoading.show();
         break;
       case ResultState.hasData:
-        EasyLoading.showSuccess(provider.registerMessage);
         Navigator.pop(context);
         break;
       case ResultState.noData:
       case ResultState.error:
-        EasyLoading.showError(provider.registerMessage);
         break;
       default:
         break;

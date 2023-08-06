@@ -11,7 +11,7 @@ import 'package:story_ku/data/pref/token_pref.dart';
 
 class ApiService {
   static const String _baseUrl = "https://story-api.dicoding.dev/v1";
-
+  static const Duration timeout = Duration(seconds: 5);
   static final Uri _loginEndpoint = Uri.parse("$_baseUrl/login");
   static final Uri _registerEndpoint = Uri.parse("$_baseUrl/register");
   static final Uri _storiesEndpoint = Uri.parse("$_baseUrl/stories");
@@ -21,7 +21,7 @@ class ApiService {
   Future<Login> login(LoginRequest request) async {
     final response = await http
         .post(_loginEndpoint, body: request.toJson())
-        .timeout(const Duration(seconds: 10));
+        .timeout(timeout);
     var login = Login.fromJson(json.decode(response.body));
 
     if (_isResponseSuccess(response.statusCode)) {
@@ -34,7 +34,7 @@ class ApiService {
   Future<BaseResponse> register(RegisterRequest request) async {
     final response = await http
         .post(_registerEndpoint, body: request.toJson())
-        .timeout(const Duration(seconds: 10));
+        .timeout(timeout);
 
     var baseResponse = BaseResponse.fromJson(json.decode(response.body));
 
@@ -51,7 +51,7 @@ class ApiService {
 
     final response = await http.get(_storiesEndpoint, headers: {
       'Authorization': 'Bearer $token',
-    }).timeout(const Duration(seconds: 10));
+    }).timeout(timeout);
 
     var stories = Stories.fromJson(json.decode(response.body));
 
@@ -68,7 +68,7 @@ class ApiService {
 
     final response = await http.get(_detailStoryEndpoint(id), headers: {
       'Authorization': 'Bearer $token',
-    }).timeout(const Duration(seconds: 10));
+    }).timeout(timeout);
 
     var detailStory = DetailStory.fromJson(json.decode(response.body));
 
@@ -97,7 +97,7 @@ class ApiService {
       request.fields['lon'] = story.lon.toString();
     }
 
-    final response = await request.send();
+    final response = await request.send().timeout(timeout);
 
     if (_isResponseSuccess(response.statusCode)) {
       String responseBody = await response.stream.bytesToString();

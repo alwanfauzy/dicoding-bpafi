@@ -156,6 +156,7 @@ class _LoginPageState extends State<LoginPage> {
         break;
       case ResultState.noData:
       case ResultState.error:
+        showToast(provider.loginMessage);
         break;
       default:
         break;

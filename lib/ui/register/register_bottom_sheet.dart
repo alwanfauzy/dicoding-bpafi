@@ -5,6 +5,7 @@ import 'package:story_ku/data/model/request/register_request.dart';
 import 'package:story_ku/provider/register_provider.dart';
 import 'package:story_ku/util/enums.dart';
 import 'package:story_ku/util/form_validator.dart';
+import 'package:story_ku/util/helper.dart';
 import 'package:story_ku/widget/primary_button.dart';
 import 'package:story_ku/widget/safe_bottom_sheet.dart';
 
@@ -97,6 +98,7 @@ class _RegisterBottomSheetState extends State<RegisterBottomSheet> {
             _handleRegisterState(provider);
 
             return PrimaryButton(
+              isLoading: provider.registerState == ResultState.loading,
               text: "Register",
               onPressed: () => _onRegisterPressed(provider),
             );
@@ -114,13 +116,13 @@ class _RegisterBottomSheetState extends State<RegisterBottomSheet> {
 
   _handleRegisterState(RegisterProvider provider) {
     switch (provider.registerState) {
-      case ResultState.loading:
-        break;
       case ResultState.hasData:
+        showToast(provider.registerMessage);
         Navigator.pop(context);
         break;
       case ResultState.noData:
       case ResultState.error:
+        showToast(provider.registerMessage);
         break;
       default:
         break;

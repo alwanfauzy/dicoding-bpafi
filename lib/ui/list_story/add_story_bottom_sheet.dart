@@ -7,7 +7,6 @@ import 'package:story_ku/data/api/api_service.dart';
 import 'package:story_ku/data/model/request/add_story_request.dart';
 import 'package:story_ku/provider/add_story_provider.dart';
 import 'package:story_ku/util/enums.dart';
-import 'package:story_ku/util/form_validator.dart';
 import 'package:story_ku/util/helper.dart';
 import 'package:story_ku/widget/primary_button.dart';
 import 'package:story_ku/widget/safe_bottom_sheet.dart';
@@ -23,6 +22,12 @@ class _AddStoryBottomSheetState extends State<AddStoryBottomSheet> {
   final _formKey = GlobalKey<FormState>();
   final _descriptionController = TextEditingController();
   File? _selectedImage;
+
+  @override
+  void dispose() {
+    super.dispose();
+    _descriptionController.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -132,12 +137,12 @@ class _AddStoryBottomSheetState extends State<AddStoryBottomSheet> {
   _handleAddStoryState(AddStoryProvider provider) {
     switch (provider.state) {
       case ResultState.hasData:
-        afterBuildWidgetCallback(() => showToast(provider.message));
+        showToast(provider.message);
         Navigator.pop(context);
         break;
       case ResultState.error:
       case ResultState.noData:
-        afterBuildWidgetCallback(() => showToast(provider.message));
+        showToast(provider.message);
         break;
       default:
         break;

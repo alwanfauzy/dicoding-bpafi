@@ -30,6 +30,7 @@ class ListStoryProvider extends ChangeNotifier {
 
       if (storiesResult.listStory?.isNotEmpty == true) {
         _state = ResultState.hasData;
+        _stories.clear();
         _stories.addAll(storiesResult.listStory ?? List.empty());
 
         _message = storiesResult.message ?? "Get Stories Success";

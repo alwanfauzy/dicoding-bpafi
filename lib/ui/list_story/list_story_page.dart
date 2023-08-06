@@ -6,6 +6,8 @@ import 'package:story_ku/data/pref/token_pref.dart';
 import 'package:story_ku/provider/list_story_provider.dart';
 import 'package:story_ku/ui/list_story/add_story_bottom_sheet.dart';
 import 'package:story_ku/util/enums.dart';
+import 'package:story_ku/widget/centered_loading.dart';
+import 'package:story_ku/widget/custom_error.dart';
 import 'package:story_ku/widget/story_item.dart';
 
 class ListStoryPage extends StatefulWidget {
@@ -20,6 +22,13 @@ class ListStoryPage extends StatefulWidget {
 }
 
 class _ListStoryPageState extends State<ListStoryPage> {
+  final _refreshKey = GlobalKey<RefreshIndicatorState>();
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -57,20 +66,29 @@ class _ListStoryPageState extends State<ListStoryPage> {
   Widget _handleListStoryState(ListStoryProvider provider) {
     switch (provider.state) {
       case ResultState.loading:
+        return const CenteredLoading();
       case ResultState.hasData:
-        return RefreshIndicator(
-          onRefresh: () => provider.getStories(),
-          child: _gridStories(
-            context,
-            provider.stories,
-          ),
-        );
+        return _content(context, provider);
       case ResultState.error:
       case ResultState.noData:
-        return Center(child: Text(provider.message));
+        return CustomError(
+          message: provider.message,
+          onRefresh: () => provider.getStories(),
+        );
       default:
-        return const Center(child: CircularProgressIndicator());
+        return Container();
     }
+  }
+
+  Widget _content(BuildContext context, ListStoryProvider provider) {
+    return RefreshIndicator(
+      key: _refreshKey,
+      onRefresh: () => provider.getStories(),
+      child: _gridStories(
+        context,
+        provider.stories,
+      ),
+    );
   }
 
   Widget _gridStories(BuildContext context, List<Story> stories) {
@@ -103,5 +121,5 @@ class _ListStoryPageState extends State<ListStoryPage> {
         useSafeArea: true,
         isScrollControlled: true,
         builder: ((context) => const AddStoryBottomSheet()),
-      );
+      ).then((value) => _refreshKey.currentState?.show());
 }

@@ -4,6 +4,7 @@ import 'package:story_ku/data/api/api_service.dart';
 import 'package:story_ku/data/model/detail_story.dart';
 import 'package:story_ku/provider/detail_story_provider.dart';
 import 'package:story_ku/util/enums.dart';
+import 'package:story_ku/widget/centered_loading.dart';
 import 'package:story_ku/widget/custom_error.dart';
 
 class DetailStoryPage extends StatelessWidget {
@@ -31,7 +32,7 @@ class DetailStoryPage extends StatelessWidget {
       builder: (context, provider, _) {
         switch (provider.state) {
           case ResultState.loading:
-            return const Center(child: CircularProgressIndicator());
+            return const CenteredLoading();
           case ResultState.hasData:
             return _content(context, provider.story);
           case ResultState.error:

@@ -39,7 +39,6 @@ class _AddStoryBottomSheetState extends State<AddStoryBottomSheet> {
       create: (context) => AddStoryProvider(ApiService()),
       child: _body(context),
     );
-    ;
   }
 
   Widget _body(BuildContext context) {

@@ -4,6 +4,7 @@ import 'package:story_ku/data/api/api_service.dart';
 import 'package:story_ku/data/model/detail_story.dart';
 import 'package:story_ku/provider/detail_story_provider.dart';
 import 'package:story_ku/util/enums.dart';
+import 'package:story_ku/widget/primary_button.dart';
 
 class DetailStoryPage extends StatelessWidget {
   final String storyId;
@@ -35,7 +36,20 @@ class DetailStoryPage extends StatelessWidget {
             return _content(context, provider.story);
           case ResultState.error:
           case ResultState.noData:
-            return Center(child: Text(provider.message));
+            return Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text(provider.message),
+                  const SizedBox(height: 8),
+                  PrimaryButton(
+                      onPressed: () => provider.getDetailStory(storyId),
+                      text: "Retry")
+                ],
+              ),
+            );
           default:
             return Container();
         }

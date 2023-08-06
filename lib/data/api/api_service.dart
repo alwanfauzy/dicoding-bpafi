@@ -56,7 +56,12 @@ class ApiService {
   }
 
   Future<DetailStory> getDetailStory(String id) async {
-    final response = await http.get(_detailStoryEndpoint(id));
+    var tokenPref = TokenPref();
+    var token = await tokenPref.getToken();
+
+    final response = await http.get(_detailStoryEndpoint(id), headers: {
+      'Authorization': 'Bearer $token',
+    });
     var detailStory = DetailStory.fromJson(json.decode(response.body));
 
     if (_isResponseSuccess(response.statusCode)) {

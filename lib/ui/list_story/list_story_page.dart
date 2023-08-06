@@ -10,8 +10,10 @@ import 'package:story_ku/widget/story_item.dart';
 
 class ListStoryPage extends StatefulWidget {
   final VoidCallback onLogoutSuccess;
+  final Function(String?) onStoryClicked;
 
-  const ListStoryPage({super.key, required this.onLogoutSuccess});
+  const ListStoryPage(
+      {super.key, required this.onLogoutSuccess, required this.onStoryClicked});
 
   @override
   State<ListStoryPage> createState() => _ListStoryPageState();
@@ -57,8 +59,12 @@ class _ListStoryPageState extends State<ListStoryPage> {
       case ResultState.loading:
       case ResultState.hasData:
         return RefreshIndicator(
-            onRefresh: () => provider.getStories(),
-            child: _gridStories(context, provider.stories));
+          onRefresh: () => provider.getStories(),
+          child: _gridStories(
+            context,
+            provider.stories,
+          ),
+        );
       case ResultState.error:
       case ResultState.noData:
         return Center(child: Text(provider.message));
@@ -76,7 +82,10 @@ class _ListStoryPageState extends State<ListStoryPage> {
       shrinkWrap: true,
       children: List.generate(
         stories.length,
-        (index) => StoryItem(story: stories[index]),
+        (index) => StoryItem(
+          story: stories[index],
+          onStoryClicked: () => widget.onStoryClicked(stories[index].id),
+        ),
       ),
     );
   }

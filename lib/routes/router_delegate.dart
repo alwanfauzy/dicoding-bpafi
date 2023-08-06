@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:story_ku/data/pref/token_pref.dart';
+import 'package:story_ku/ui/detail/detail_story_page.dart';
 import 'package:story_ku/ui/list_story/list_story_page.dart';
 import 'package:story_ku/ui/login/login_page.dart';
 import 'package:story_ku/ui/splash/splash_page.dart';
@@ -21,6 +22,8 @@ class MyRouterDelegate extends RouterDelegate
 
   @override
   GlobalKey<NavigatorState> get navigatorKey => _navigatorKey;
+
+  String? storyId;
 
   List<Page> historyStack = [];
   bool? isLoggedIn;
@@ -44,6 +47,7 @@ class MyRouterDelegate extends RouterDelegate
           return false;
         }
 
+        storyId = null;
         notifyListeners();
 
         return true;
@@ -83,7 +87,18 @@ class MyRouterDelegate extends RouterDelegate
               isLoggedIn = false;
               notifyListeners();
             },
+            onStoryClicked: (String? id) {
+              storyId = id;
+              notifyListeners();
+            },
           ),
         ),
+        if (storyId != null)
+          MaterialPage(
+            key: const ValueKey("DetailStoryPage"),
+            child: DetailStoryPage(
+              storyId: storyId!,
+            ),
+          ),
       ];
 }

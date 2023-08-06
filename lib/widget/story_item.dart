@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:story_ku/data/model/detail_story.dart';
-import 'package:story_ku/ui/detail/detail_story_page.dart';
 
 class StoryItem extends StatelessWidget {
   final Story story;
+  final VoidCallback onStoryClicked;
 
-  const StoryItem({super.key, required this.story});
+  const StoryItem({super.key, required this.story, required this.onStoryClicked});
 
   @override
   Widget build(BuildContext context) {
@@ -15,8 +15,7 @@ class StoryItem extends StatelessWidget {
       shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(16))),
       child: InkWell(
-        onTap: () => Navigator.push(context,
-            MaterialPageRoute(builder: (context) => const DetailStoryPage())),
+        onTap: onStoryClicked,
         child: Stack(children: [
           Container(
             decoration: BoxDecoration(

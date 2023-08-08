@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
+import 'package:story_ku/common.dart';
 import 'package:story_ku/data/api/api_service.dart';
 import 'package:story_ku/data/model/request/add_story_request.dart';
 import 'package:story_ku/provider/add_story_provider.dart';
@@ -53,9 +54,10 @@ class _AddStoryBottomSheetState extends State<AddStoryBottomSheet> {
   Widget _header(BuildContext context) {
     return Column(
       children: [
-        Text("Add Story", style: Theme.of(context).textTheme.headlineSmall),
+        Text(AppLocalizations.of(context)!.titleAddStory,
+            style: Theme.of(context).textTheme.headlineSmall),
         Text(
-          "Create and upload your story",
+          AppLocalizations.of(context)!.createStory,
           style: Theme.of(context).textTheme.labelMedium,
         ),
         const SizedBox(height: 16),
@@ -92,7 +94,7 @@ class _AddStoryBottomSheetState extends State<AddStoryBottomSheet> {
                           child: Image.file(_selectedImage!)),
                     ),
                   Text(
-                    "Select Image",
+                    AppLocalizations.of(context)!.selectImage,
                     style: Theme.of(context).textTheme.bodyLarge,
                   ),
                 ],
@@ -104,7 +106,7 @@ class _AddStoryBottomSheetState extends State<AddStoryBottomSheet> {
             controller: _descriptionController,
             maxLines: 4,
             decoration: InputDecoration(
-              labelText: "Description",
+              labelText: AppLocalizations.of(context)!.fieldDescription,
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(5.0),
               ),
@@ -117,7 +119,7 @@ class _AddStoryBottomSheetState extends State<AddStoryBottomSheet> {
             return PrimaryButton(
               isLoading: provider.state == ResultState.loading,
               onPressed: () => _onUploadPressed(provider),
-              text: "Upload",
+              text: AppLocalizations.of(context)!.buttonUpload,
             );
           }),
         ],

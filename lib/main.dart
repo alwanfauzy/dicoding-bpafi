@@ -3,7 +3,11 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:json_theme/json_theme.dart';
+import 'package:provider/provider.dart';
+import 'package:story_ku/provider/localization_provider.dart';
 import 'package:story_ku/routes/router_delegate.dart';
+
+import 'common.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -49,13 +53,22 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'StoryKu',
-      theme: widget.theme,
-      home: Router(
-        routerDelegate: _myRouterDelegate,
-        backButtonDispatcher: RootBackButtonDispatcher(),
-      ),
+    return ChangeNotifierProvider<LocalizationProvider>(
+      create: (context) => LocalizationProvider(),
+      builder: ((context, child) {
+        final provider = Provider.of<LocalizationProvider>(context);
+        return MaterialApp(
+          title: 'StoryKu',
+          theme: widget.theme,
+          home: Router(
+            routerDelegate: _myRouterDelegate,
+            backButtonDispatcher: RootBackButtonDispatcher(),
+          ),
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
+          locale: provider.locale,
+        );
+      }),
     );
   }
 }

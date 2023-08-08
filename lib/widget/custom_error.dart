@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:story_ku/common.dart';
 import 'package:story_ku/widget/primary_button.dart';
 
 class CustomError extends StatelessWidget {
@@ -20,7 +21,7 @@ class CustomError extends StatelessWidget {
           const SizedBox(height: 8),
           PrimaryButton(
             onPressed: onRefresh,
-            text: "Reload",
+            text: AppLocalizations.of(context)!.buttonReload,
           ),
         ],
       ),

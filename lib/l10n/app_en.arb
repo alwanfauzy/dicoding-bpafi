@@ -1,0 +1,27 @@
+{
+  "appTitle": "StoryKu",
+  "@appTitle": {
+    "description": "Do not translate."
+  },
+  "welcome": "Welcome to StoryKu Flutter Version",
+  "buttonLogin": "Login",
+  "buttonRegister": "Register",
+  "buttonUpload": "Upload",
+  "buttonReload": "Reload",
+  "fieldDescription": "Description",
+  "fieldName": "Name",
+  "fieldEmail": "Email",
+  "@fieldEmail": {
+    "description": "Do not translate."
+  },
+  "fieldPassword": "Password",
+  "@fieldPassword": {
+    "description": "Do not translate."
+  },
+  "titleAddStory": "Add Story",
+  "titleListStory": "List Story",
+  "titleDetailStory": "Detail Story",
+  "createAccount": "Create account to login this app",
+  "createStory": "Create and upload your story",
+  "selectImage": "Select Image"
+}

@@ -1,0 +1,27 @@
+{
+  "appTitle": "StoryKu",
+  "@appTitle": {
+    "description": "Do not translate."
+  },
+  "welcome": "Selamat datang di StoryKu versi Flutter",
+  "buttonLogin": "Masuk",
+  "buttonRegister": "Daftar",
+  "buttonUpload": "Unggah",
+  "buttonReload": "Muat ulang",
+  "fieldDescription": "Deskripsi",
+  "fieldName": "Nama",
+  "fieldEmail": "Email",
+  "@fieldEmail": {
+    "description": "Do not translate."
+  },
+  "fieldPassword": "Password",
+  "@fieldPassword": {
+    "description": "Do not translate."
+  },
+  "titleAddStory": "Tambah Cerita",
+  "titleListStory": "Daftar Cerita",
+  "titleDetailStory": "Detail Cerita",
+  "createAccount": "Buat akun untuk masuk di aplikasi ini",
+  "createStory": "Buat dan unggah cerita",
+  "selectImage": "Pilih Gambar"
+}

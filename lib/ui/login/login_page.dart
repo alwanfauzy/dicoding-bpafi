@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
+import 'package:story_ku/common.dart';
 import 'package:story_ku/data/api/api_service.dart';
 import 'package:story_ku/data/model/request/login_request.dart';
 import 'package:story_ku/data/pref/token_pref.dart';
@@ -73,12 +74,12 @@ class _LoginPageState extends State<LoginPage> {
           height: 100,
         ),
         Text(
-          "StoryKu",
+          AppLocalizations.of(context)!.appTitle,
           style: Theme.of(context).textTheme.headlineMedium,
         ),
         const SizedBox(height: 8),
         Text(
-          "Welcome to StoryKu Flutter Version",
+          AppLocalizations.of(context)!.welcome,
           style: Theme.of(context).textTheme.bodyMedium,
         ),
         Text(
@@ -99,7 +100,7 @@ class _LoginPageState extends State<LoginPage> {
           TextFormField(
             controller: _emailController,
             decoration: InputDecoration(
-              labelText: "Email",
+              labelText: AppLocalizations.of(context)!.fieldEmail,
               border:
                   OutlineInputBorder(borderRadius: BorderRadius.circular(5.0)),
             ),
@@ -110,7 +111,7 @@ class _LoginPageState extends State<LoginPage> {
             controller: _passwordController,
             obscureText: true,
             decoration: InputDecoration(
-              labelText: "Password",
+              labelText: AppLocalizations.of(context)!.fieldPassword,
               border:
                   OutlineInputBorder(borderRadius: BorderRadius.circular(5.0)),
             ),
@@ -121,14 +122,14 @@ class _LoginPageState extends State<LoginPage> {
             _handleLoginState(provider);
 
             return PrimaryButton(
-              text: "Login",
+              text: AppLocalizations.of(context)!.buttonLogin,
               isLoading: (provider.loginState == ResultState.loading),
               onPressed: () => _onLoginPressed(provider),
             );
           }),
           const SizedBox(height: 8),
           SecondaryButton(
-            text: "Register",
+            text: AppLocalizations.of(context)!.buttonRegister,
             onPressed: () => _onRegisterPressed(),
           ),
         ],

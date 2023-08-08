@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:story_ku/common.dart';
 import 'package:story_ku/data/api/api_service.dart';
 import 'package:story_ku/data/model/request/register_request.dart';
 import 'package:story_ku/provider/register_provider.dart';
@@ -49,9 +50,10 @@ class _RegisterBottomSheetState extends State<RegisterBottomSheet> {
   Widget _header(BuildContext context) {
     return Column(
       children: [
-        Text("Register", style: Theme.of(context).textTheme.headlineSmall),
+        Text(AppLocalizations.of(context)!.buttonRegister,
+            style: Theme.of(context).textTheme.headlineSmall),
         Text(
-          "Create account to login this app",
+          AppLocalizations.of(context)!.createAccount,
           style: Theme.of(context).textTheme.labelMedium,
         ),
         const SizedBox(height: 16),
@@ -67,7 +69,7 @@ class _RegisterBottomSheetState extends State<RegisterBottomSheet> {
           TextFormField(
             controller: _nameController,
             decoration: InputDecoration(
-              labelText: "Name",
+              labelText: AppLocalizations.of(context)!.fieldName,
               border:
                   OutlineInputBorder(borderRadius: BorderRadius.circular(5.0)),
             ),
@@ -76,7 +78,7 @@ class _RegisterBottomSheetState extends State<RegisterBottomSheet> {
           TextFormField(
             controller: _emailController,
             decoration: InputDecoration(
-              labelText: "Email",
+              labelText: AppLocalizations.of(context)!.fieldEmail,
               border:
                   OutlineInputBorder(borderRadius: BorderRadius.circular(5.0)),
             ),
@@ -87,7 +89,7 @@ class _RegisterBottomSheetState extends State<RegisterBottomSheet> {
             obscureText: true,
             controller: _passwordController,
             decoration: InputDecoration(
-              labelText: "Password",
+              labelText: AppLocalizations.of(context)!.fieldPassword,
               border:
                   OutlineInputBorder(borderRadius: BorderRadius.circular(5.0)),
             ),
@@ -99,7 +101,7 @@ class _RegisterBottomSheetState extends State<RegisterBottomSheet> {
 
             return PrimaryButton(
               isLoading: provider.registerState == ResultState.loading,
-              text: "Register",
+              text: AppLocalizations.of(context)!.buttonRegister,
               onPressed: () => _onRegisterPressed(provider),
             );
           }),

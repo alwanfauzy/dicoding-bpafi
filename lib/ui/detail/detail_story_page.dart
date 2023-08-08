@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:story_ku/common.dart';
 import 'package:story_ku/data/api/api_service.dart';
 import 'package:story_ku/data/model/detail_story.dart';
 import 'package:story_ku/provider/detail_story_provider.dart';
@@ -15,7 +16,8 @@ class DetailStoryPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Detail Story")),
+      appBar:
+          AppBar(title: Text(AppLocalizations.of(context)!.titleDetailStory)),
       body: _provider(context),
     );
   }

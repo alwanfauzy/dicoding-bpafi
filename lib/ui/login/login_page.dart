@@ -6,7 +6,6 @@ import 'package:story_ku/data/api/api_service.dart';
 import 'package:story_ku/data/model/request/login_request.dart';
 import 'package:story_ku/data/pref/token_pref.dart';
 import 'package:story_ku/provider/login_provider.dart';
-import 'package:story_ku/ui/register/register_bottom_sheet.dart';
 import 'package:story_ku/util/enums.dart';
 import 'package:story_ku/util/form_validator.dart';
 import 'package:story_ku/util/helper.dart';
@@ -16,8 +15,9 @@ import 'package:story_ku/widget/secondary_button.dart';
 
 class LoginPage extends StatefulWidget {
   final VoidCallback onLoginSuccess;
+  final VoidCallback onRegisterClicked;
 
-  const LoginPage({super.key, required this.onLoginSuccess});
+  const LoginPage({super.key, required this.onLoginSuccess, required this.onRegisterClicked});
 
   @override
   State<LoginPage> createState() => _LoginPageState();
@@ -27,12 +27,6 @@ class _LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
-
-  @override
-  void initState() {
-    super.initState();
-    // WidgetsBinding.instance.addPostFrameCallback((_) => _onRegisterPressed());
-  }
 
   @override
   void dispose() {
@@ -130,7 +124,7 @@ class _LoginPageState extends State<LoginPage> {
           const SizedBox(height: 8),
           SecondaryButton(
             text: AppLocalizations.of(context)!.buttonRegister,
-            onPressed: () => _onRegisterPressed(),
+            onPressed: () => widget.onRegisterClicked(),
           ),
         ],
       ),
@@ -142,13 +136,6 @@ class _LoginPageState extends State<LoginPage> {
       provider.login(_getLoginRequest());
     }
   }
-
-  _onRegisterPressed() => showModalBottomSheet(
-        isScrollControlled: true,
-        backgroundColor: Colors.transparent,
-        context: context,
-        builder: ((context) => const RegisterBottomSheet()),
-      );
 
   _handleLoginState(LoginProvider provider) {
     switch (provider.loginState) {

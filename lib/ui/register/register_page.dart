@@ -8,16 +8,18 @@ import 'package:story_ku/util/enums.dart';
 import 'package:story_ku/util/form_validator.dart';
 import 'package:story_ku/util/helper.dart';
 import 'package:story_ku/widget/primary_button.dart';
-import 'package:story_ku/widget/safe_bottom_sheet.dart';
+import 'package:story_ku/widget/safe_scaffold.dart';
 
-class RegisterBottomSheet extends StatefulWidget {
-  const RegisterBottomSheet({super.key});
+class RegisterPage extends StatefulWidget {
+  final VoidCallback onRegisterSuccess;
+
+  const RegisterPage({super.key, required this.onRegisterSuccess});
 
   @override
-  State<RegisterBottomSheet> createState() => _RegisterBottomSheetState();
+  State<RegisterPage> createState() => _RegisterPageState();
 }
 
-class _RegisterBottomSheetState extends State<RegisterBottomSheet> {
+class _RegisterPageState extends State<RegisterPage> {
   final _formKey = GlobalKey<FormState>();
   final _nameController = TextEditingController();
   final _emailController = TextEditingController();
@@ -32,17 +34,25 @@ class _RegisterBottomSheetState extends State<RegisterBottomSheet> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeBottomSheet(child: _provider(context));
+    return SafeScaffold(
+      body: _provider(context),
+      appBar: AppBar(
+        title: Text(AppLocalizations.of(context)!.buttonRegister),
+      ),
+    );
   }
 
   Widget _provider(BuildContext context) {
     return ChangeNotifierProvider<RegisterProvider>(
       create: (context) => RegisterProvider(ApiService()),
-      child: Column(
-        children: [
-          _header(context),
-          _form(context),
-        ],
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 64),
+        child: Column(
+          children: [
+            _header(context),
+            _form(context),
+          ],
+        ),
       ),
     );
   }
@@ -50,8 +60,6 @@ class _RegisterBottomSheetState extends State<RegisterBottomSheet> {
   Widget _header(BuildContext context) {
     return Column(
       children: [
-        Text(AppLocalizations.of(context)!.buttonRegister,
-            style: Theme.of(context).textTheme.headlineSmall),
         Text(
           AppLocalizations.of(context)!.createAccount,
           style: Theme.of(context).textTheme.labelMedium,
@@ -120,7 +128,7 @@ class _RegisterBottomSheetState extends State<RegisterBottomSheet> {
     switch (provider.registerState) {
       case ResultState.hasData:
         showToast(provider.registerMessage);
-        Navigator.pop(context);
+        afterBuildWidgetCallback(() => widget.onRegisterSuccess());
         break;
       case ResultState.noData:
       case ResultState.error:

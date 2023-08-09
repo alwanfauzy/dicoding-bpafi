@@ -3,6 +3,7 @@ import 'package:story_ku/data/pref/token_pref.dart';
 import 'package:story_ku/ui/detail/detail_story_page.dart';
 import 'package:story_ku/ui/list_story/list_story_page.dart';
 import 'package:story_ku/ui/login/login_page.dart';
+import 'package:story_ku/ui/register/register_page.dart';
 import 'package:story_ku/ui/splash/splash_page.dart';
 
 class MyRouterDelegate extends RouterDelegate
@@ -27,6 +28,7 @@ class MyRouterDelegate extends RouterDelegate
 
   List<Page> historyStack = [];
   bool? isLoggedIn;
+  bool isRegister = false;
 
   @override
   Widget build(BuildContext context) {
@@ -47,6 +49,7 @@ class MyRouterDelegate extends RouterDelegate
           return false;
         }
 
+        isRegister = false;
         storyId = null;
         notifyListeners();
 
@@ -75,8 +78,19 @@ class MyRouterDelegate extends RouterDelegate
               isLoggedIn = true;
               notifyListeners();
             },
+            onRegisterClicked: () {
+              isRegister = true;
+              notifyListeners();
+            },
           ),
         ),
+        if (isRegister == true)
+          MaterialPage(child: RegisterPage(
+            onRegisterSuccess: () {
+              isRegister = false;
+              notifyListeners();
+            },
+          )),
       ];
 
   List<Page> get _loggedInStack => [

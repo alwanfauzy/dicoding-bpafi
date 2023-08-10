@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:json_theme/json_theme.dart';
 import 'package:provider/provider.dart';
 import 'package:story_ku/provider/localization_provider.dart';
+import 'package:story_ku/routes/page_manager.dart';
 import 'package:story_ku/routes/router_delegate.dart';
 
 import 'common.dart';
@@ -53,10 +54,18 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider<LocalizationProvider>(
-      create: (context) => LocalizationProvider(),
-      builder: ((context, child) {
-        final provider = Provider.of<LocalizationProvider>(context);
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider<LocalizationProvider>(
+          create: (context) => LocalizationProvider(),
+        ),
+        ChangeNotifierProvider<PageManager>(
+          create: (context) => PageManager(),
+        ),
+      ],
+      builder: (context, child) {
+        final localizationProvider = Provider.of<LocalizationProvider>(context);
+
         return MaterialApp(
           title: 'StoryKu',
           theme: widget.theme,
@@ -66,9 +75,9 @@ class _MyAppState extends State<MyApp> {
           ),
           localizationsDelegates: AppLocalizations.localizationsDelegates,
           supportedLocales: AppLocalizations.supportedLocales,
-          locale: provider.locale,
+          locale: localizationProvider.locale,
         );
-      }),
+      },
     );
   }
 }

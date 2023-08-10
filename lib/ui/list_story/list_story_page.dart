@@ -5,8 +5,9 @@ import 'package:story_ku/data/api/api_service.dart';
 import 'package:story_ku/data/model/detail_story.dart';
 import 'package:story_ku/data/pref/token_pref.dart';
 import 'package:story_ku/provider/list_story_provider.dart';
-import 'package:story_ku/ui/list_story/add_story_bottom_sheet.dart';
+import 'package:story_ku/routes/page_manager.dart';
 import 'package:story_ku/util/enums.dart';
+import 'package:story_ku/util/helper.dart';
 import 'package:story_ku/widget/centered_loading.dart';
 import 'package:story_ku/widget/custom_error.dart';
 import 'package:story_ku/widget/flag_icon.dart';
@@ -15,9 +16,14 @@ import 'package:story_ku/widget/story_item.dart';
 class ListStoryPage extends StatefulWidget {
   final VoidCallback onLogoutSuccess;
   final Function(String?) onStoryClicked;
+  final VoidCallback onAddStoryClicked;
 
-  const ListStoryPage(
-      {super.key, required this.onLogoutSuccess, required this.onStoryClicked});
+  const ListStoryPage({
+    super.key,
+    required this.onLogoutSuccess,
+    required this.onStoryClicked,
+    required this.onAddStoryClicked,
+  });
 
   @override
   State<ListStoryPage> createState() => _ListStoryPageState();
@@ -25,6 +31,20 @@ class ListStoryPage extends StatefulWidget {
 
 class _ListStoryPageState extends State<ListStoryPage> {
   final _refreshKey = GlobalKey<RefreshIndicatorState>();
+
+  @override
+  void initState() {
+    super.initState();
+
+    afterBuildWidgetCallback(() async {
+      final pageManager = context.read<PageManager>();
+      final shouldRefresh = await pageManager.waitForResult();
+
+      if (shouldRefresh) {
+        _refreshKey.currentState?.show();
+      }
+    });
+  }
 
   @override
   void dispose() {
@@ -47,7 +67,7 @@ class _ListStoryPageState extends State<ListStoryPage> {
         ],
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: _onAddStoryPressed,
+        onPressed: widget.onAddStoryClicked,
         child: const Icon(Icons.add),
       ),
       body: _provider(context),
@@ -118,12 +138,4 @@ class _ListStoryPageState extends State<ListStoryPage> {
 
     widget.onLogoutSuccess();
   }
-
-  _onAddStoryPressed() => showModalBottomSheet(
-        backgroundColor: Colors.transparent,
-        context: context,
-        useSafeArea: true,
-        isScrollControlled: true,
-        builder: ((context) => const AddStoryBottomSheet()),
-      ).then((value) => _refreshKey.currentState?.show());
 }

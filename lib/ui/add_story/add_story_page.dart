@@ -7,19 +7,22 @@ import 'package:story_ku/common.dart';
 import 'package:story_ku/data/api/api_service.dart';
 import 'package:story_ku/data/model/request/add_story_request.dart';
 import 'package:story_ku/provider/add_story_provider.dart';
+import 'package:story_ku/routes/page_manager.dart';
 import 'package:story_ku/util/enums.dart';
 import 'package:story_ku/util/helper.dart';
 import 'package:story_ku/widget/primary_button.dart';
-import 'package:story_ku/widget/safe_bottom_sheet.dart';
+import 'package:story_ku/widget/safe_scaffold.dart';
 
-class AddStoryBottomSheet extends StatefulWidget {
-  const AddStoryBottomSheet({super.key});
+class AddStoryPage extends StatefulWidget {
+  final VoidCallback onSuccessAddStory;
+
+  const AddStoryPage({super.key, required this.onSuccessAddStory});
 
   @override
-  State<AddStoryBottomSheet> createState() => _AddStoryBottomSheetState();
+  State<AddStoryPage> createState() => _AddStoryPageState();
 }
 
-class _AddStoryBottomSheetState extends State<AddStoryBottomSheet> {
+class _AddStoryPageState extends State<AddStoryPage> {
   final _formKey = GlobalKey<FormState>();
   final _descriptionController = TextEditingController();
   File? _selectedImage;
@@ -32,7 +35,12 @@ class _AddStoryBottomSheetState extends State<AddStoryBottomSheet> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeBottomSheet(child: _provider(context));
+    return SafeScaffold(
+      body: _provider(context),
+      appBar: AppBar(
+        title: Text(AppLocalizations.of(context)!.titleAddStory),
+      ),
+    );
   }
 
   Widget _provider(BuildContext context) {
@@ -43,19 +51,20 @@ class _AddStoryBottomSheetState extends State<AddStoryBottomSheet> {
   }
 
   Widget _body(BuildContext context) {
-    return Column(
-      children: [
-        _header(context),
-        _form(context),
-      ],
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 64),
+      child: Column(
+        children: [
+          _header(context),
+          _form(context),
+        ],
+      ),
     );
   }
 
   Widget _header(BuildContext context) {
     return Column(
       children: [
-        Text(AppLocalizations.of(context)!.titleAddStory,
-            style: Theme.of(context).textTheme.headlineSmall),
         Text(
           AppLocalizations.of(context)!.createStory,
           style: Theme.of(context).textTheme.labelMedium,
@@ -139,7 +148,10 @@ class _AddStoryBottomSheetState extends State<AddStoryBottomSheet> {
     switch (provider.state) {
       case ResultState.hasData:
         showToast(provider.message);
-        Navigator.pop(context);
+        afterBuildWidgetCallback(() {
+          context.read<PageManager>().returnData(true);
+          widget.onSuccessAddStory();
+        });
         break;
       case ResultState.error:
       case ResultState.noData:

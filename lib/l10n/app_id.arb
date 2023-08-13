@@ -21,7 +21,29 @@
   "titleAddStory": "Tambah Cerita",
   "titleListStory": "Daftar Cerita",
   "titleDetailStory": "Detail Cerita",
+  "titleAddLocation": "Tambah Lokasi",
   "createAccount": "Buat akun untuk masuk di aplikasi ini",
   "createStory": "Buat dan unggah cerita",
-  "selectImage": "Pilih Gambar"
+  "selectImage": "Pilih Gambar",
+  "locationLatLng": "Lokasi yang dipilih: ({lat};{lng})",
+  "@locationLatLng": {
+    "placeholders": {
+      "lat": {
+        "type": "double",
+        "format": "decimalPattern",
+        "optionalParameters": {
+          "decimalDigits": 3
+        }
+      },
+      "lng": {
+        "type": "double",
+        "format": "decimalPattern",
+        "optionalParameters": {
+          "decimalDigits": 3
+        }
+      }
+    }
+  },
+  "permissionDeniedLocation": "Allow location request to enable location features at the moment",
+  "permissionDeniedForeverLocation": "Location request denied, manually enable it in settings"
 }

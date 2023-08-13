@@ -5,7 +5,8 @@ import 'package:flutter/services.dart';
 import 'package:json_theme/json_theme.dart';
 import 'package:provider/provider.dart';
 import 'package:story_ku/provider/localization_provider.dart';
-import 'package:story_ku/routes/page_manager.dart';
+import 'package:story_ku/routes/list_page_manager.dart';
+import 'package:story_ku/routes/location_page_manager.dart';
 import 'package:story_ku/routes/router_delegate.dart';
 
 import 'common.dart';
@@ -59,8 +60,11 @@ class _MyAppState extends State<MyApp> {
         ChangeNotifierProvider<LocalizationProvider>(
           create: (context) => LocalizationProvider(),
         ),
-        ChangeNotifierProvider<PageManager>(
-          create: (context) => PageManager(),
+        ChangeNotifierProvider(
+          create: (context) => ListPageManager(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => LocationPageManager(),
         ),
       ],
       builder: (context, child) {

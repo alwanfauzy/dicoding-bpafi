@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:story_ku/common.dart';
 import 'package:story_ku/data/api/api_service.dart';
 import 'package:story_ku/data/model/detail_story.dart';
 import 'package:story_ku/data/pref/token_pref.dart';
 import 'package:story_ku/provider/list_story_provider.dart';
-import 'package:story_ku/routes/page_manager.dart';
+import 'package:story_ku/routes/list_page_manager.dart';
+import 'package:story_ku/routes/location_page_manager.dart';
 import 'package:story_ku/util/enums.dart';
 import 'package:story_ku/util/helper.dart';
 import 'package:story_ku/widget/centered_loading.dart';
@@ -32,23 +34,22 @@ class ListStoryPage extends StatefulWidget {
 class _ListStoryPageState extends State<ListStoryPage> {
   final _refreshKey = GlobalKey<RefreshIndicatorState>();
 
-  @override
-  void initState() {
-    super.initState();
+  Future<void> requestLocationPermission() async {
+    final status = await Permission.location.request();
+    if (status.isGranted) {
+      widget.onAddStoryClicked();
 
-    afterBuildWidgetCallback(() async {
-      final pageManager = context.read<PageManager>();
+      final pageManager = context.read<ListPageManager>();
       final shouldRefresh = await pageManager.waitForResult();
 
       if (shouldRefresh) {
         _refreshKey.currentState?.show();
       }
-    });
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
+    } else if (status.isDenied) {
+      showToast(AppLocalizations.of(context)!.permissionDeniedLocation);
+    } else if (status.isPermanentlyDenied) {
+      showToast(AppLocalizations.of(context)!.permissionDeniedForeverLocation);
+    }
   }
 
   @override
@@ -67,7 +68,7 @@ class _ListStoryPageState extends State<ListStoryPage> {
         ],
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: widget.onAddStoryClicked,
+        onPressed: requestLocationPermission,
         child: const Icon(Icons.add),
       ),
       body: _provider(context),

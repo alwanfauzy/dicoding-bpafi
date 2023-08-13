@@ -21,7 +21,29 @@
   "titleAddStory": "Add Story",
   "titleListStory": "List Story",
   "titleDetailStory": "Detail Story",
+  "titleAddLocation": "Add Location",
   "createAccount": "Create account to login this app",
   "createStory": "Create and upload your story",
-  "selectImage": "Select Image"
+  "selectImage": "Select Image",
+  "locationLatLng": "Selected location: ({lat};{lng})",
+  "@locationLatLng": {
+    "placeholders": {
+      "lat": {
+        "type": "number",
+        "format": "decimalPattern",
+        "optionalParameters": {
+          "decimalDigits": 3
+        }
+      },
+      "lng": {
+        "type": "number",
+        "format": "decimalPattern",
+        "optionalParameters": {
+          "decimalDigits": 3
+        }
+      }
+    }
+  },
+  "permissionDeniedLocation": "Izinkan permintaan lokasi untuk mengaktifkan fitur lokasi saat ini",
+  "permissionDeniedForeverLocation": "Permintaan lokasi ditolak, aktifkan secara manual di pengaturan"
 }

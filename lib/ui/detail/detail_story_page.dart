@@ -114,7 +114,8 @@ class DetailStoryPage extends StatelessWidget {
                         position: location,
                         infoWindow: InfoWindow(
                           title: provider.address,
-                          snippet: location.toString(),
+                          snippet: AppLocalizations.of(context)!.locationLatLng(
+                              location.latitude, location.longitude),
                         ),
                       )
                     },

@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'package:story_ku/data/model/base_response.dart';
 import 'package:story_ku/data/model/detail_story.dart';
@@ -17,6 +18,8 @@ class ApiService {
   static final Uri _storiesEndpoint = Uri.parse("$_baseUrl/stories");
 
   Uri _detailStoryEndpoint(String id) => Uri.parse("$_baseUrl/stories/$id");
+  Uri _geofenceEndpoint(LatLng location) => Uri.parse(
+      "https://maps.googleapis.com/maps/api/geocode/json?latlng=${location.latitude},${location.longitude}&key=AIzaSyBdp_PyaGP8pCjyzgcmA496i03zz39moUY");
 
   Future<Login> login(LoginRequest request) async {
     final response = await http
@@ -104,6 +107,21 @@ class ApiService {
       return BaseResponse.fromJson(json.decode(responseBody));
     } else {
       throw Exception("${response.statusCode} - Error when upload story");
+    }
+  }
+
+  Future<String> getAddress(LatLng location) async {
+    final response =
+        await http.get(_geofenceEndpoint(location)).timeout(timeout);
+
+    if (_isResponseSuccess(response.statusCode)) {
+      final data = json.decode(response.body);
+      if (data['status'] == 'OK' && data['results'].isNotEmpty) {
+        return data['results'][0]['formatted_address'];
+      }
+      return "Address not found";
+    } else {
+      throw Exception("${response.statusCode} - Cannot get address");
     }
   }
 

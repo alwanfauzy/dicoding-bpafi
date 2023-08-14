@@ -32,6 +32,27 @@ class ListStoryPage extends StatefulWidget {
 
 class _ListStoryPageState extends State<ListStoryPage> {
   final _refreshKey = GlobalKey<RefreshIndicatorState>();
+  final _scrollController = ScrollController();
+  late ListStoryProvider _listStoryProvider;
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController.addListener(_infiniteScroll);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _listStoryProvider.dispose();
+  }
+
+  _infiniteScroll() {
+    if (_scrollController.position.pixels >=
+        _scrollController.position.maxScrollExtent) {
+      _listStoryProvider.getStories();
+    }
+  }
 
   Future<void> requestLocationPermission() async {
     final status = await Permission.location.request();
@@ -83,18 +104,19 @@ class _ListStoryPageState extends State<ListStoryPage> {
 
   Widget _body(BuildContext context) {
     return Consumer<ListStoryProvider>(builder: (context, provider, _) {
+      _listStoryProvider = provider;
+
       return _handleListStoryState(provider);
     });
   }
 
   Widget _handleListStoryState(ListStoryProvider provider) {
     switch (provider.state) {
+      case ResultState.noData:
       case ResultState.loading:
-        return const CenteredLoading();
       case ResultState.hasData:
         return _content(context, provider);
       case ResultState.error:
-      case ResultState.noData:
         return CustomError(
           message: provider.message,
           onRefresh: () => provider.getStories(),
@@ -107,7 +129,7 @@ class _ListStoryPageState extends State<ListStoryPage> {
   Widget _content(BuildContext context, ListStoryProvider provider) {
     return RefreshIndicator(
       key: _refreshKey,
-      onRefresh: () => provider.getStories(),
+      onRefresh: () => provider.getStories(isRefresh: true),
       child: _gridStories(
         context,
         provider.stories,
@@ -116,19 +138,25 @@ class _ListStoryPageState extends State<ListStoryPage> {
   }
 
   Widget _gridStories(BuildContext context, List<Story> stories) {
-    return GridView.count(
+    return GridView.builder(
       padding: const EdgeInsets.all(16),
-      mainAxisSpacing: 4,
-      crossAxisSpacing: 4,
-      crossAxisCount: 2,
-      shrinkWrap: true,
-      children: List.generate(
-        stories.length,
-        (index) => StoryItem(
-          story: stories[index],
-          onStoryClicked: () => widget.onStoryClicked(stories[index].id),
-        ),
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 2,
+        crossAxisSpacing: 4,
+        mainAxisSpacing: 4,
       ),
+      controller: _scrollController,
+      itemCount: stories.length + 1,
+      itemBuilder: (context, index) {
+        if (index < stories.length) {
+          return StoryItem(
+            story: stories[index],
+            onStoryClicked: () => widget.onStoryClicked(stories[index].id),
+          );
+        } else {
+          return const CenteredLoading();
+        }
+      },
     );
   }
 

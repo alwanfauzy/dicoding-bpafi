@@ -15,8 +15,10 @@ class ApiService {
   static const Duration timeout = Duration(seconds: 5);
   static final Uri _loginEndpoint = Uri.parse("$_baseUrl/login");
   static final Uri _registerEndpoint = Uri.parse("$_baseUrl/register");
-  static final Uri _storiesEndpoint = Uri.parse("$_baseUrl/stories");
+  static final Uri _addStoryEndpoint = Uri.parse("$_baseUrl/stories");
 
+  Uri _storiesEndpoint(int page, int size) =>
+      Uri.parse("$_baseUrl/stories?page=$page&size=$size");
   Uri _detailStoryEndpoint(String id) => Uri.parse("$_baseUrl/stories/$id");
   Uri _geofenceEndpoint(LatLng location) => Uri.parse(
       "https://maps.googleapis.com/maps/api/geocode/json?latlng=${location.latitude},${location.longitude}&key=AIzaSyBdp_PyaGP8pCjyzgcmA496i03zz39moUY");
@@ -48,11 +50,11 @@ class ApiService {
     }
   }
 
-  Future<Stories> getStories() async {
+  Future<Stories> getStories(int page, int size) async {
     var tokenPref = TokenPref();
     var token = await tokenPref.getToken();
 
-    final response = await http.get(_storiesEndpoint, headers: {
+    final response = await http.get(_storiesEndpoint(page, size), headers: {
       'Authorization': 'Bearer $token',
     }).timeout(timeout);
 
@@ -86,7 +88,7 @@ class ApiService {
     var tokenPref = TokenPref();
     var token = await tokenPref.getToken();
 
-    final request = http.MultipartRequest('POST', _storiesEndpoint);
+    final request = http.MultipartRequest('POST', _addStoryEndpoint);
     request.headers['Authorization'] = 'Bearer $token';
     request.fields['description'] = story.description;
     request.files.add(http.MultipartFile(

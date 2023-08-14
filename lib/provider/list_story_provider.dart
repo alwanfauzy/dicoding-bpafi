@@ -21,19 +21,26 @@ class ListStoryProvider extends ChangeNotifier {
   final List<Story> _stories = [];
   List<Story> get stories => _stories;
 
-  Future<dynamic> getStories() async {
+  int page = 1;
+  int size = 20;
+
+  Future<dynamic> getStories({bool isRefresh = false}) async {
     try {
       _state = ResultState.loading;
       notifyListeners();
 
-      final storiesResult = await apiService.getStories();
+      if (isRefresh) {
+        page = 1;
+        _stories.clear();
+      }
+      final storiesResult = await apiService.getStories(page, size);
 
       if (storiesResult.listStory?.isNotEmpty == true) {
         _state = ResultState.hasData;
-        _stories.clear();
         _stories.addAll(storiesResult.listStory ?? List.empty());
 
         _message = storiesResult.message ?? "Get Stories Success";
+        page++;
       } else {
         _state = ResultState.noData;
 

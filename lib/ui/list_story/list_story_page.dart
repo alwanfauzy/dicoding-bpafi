@@ -7,7 +7,6 @@ import 'package:story_ku/data/model/detail_story.dart';
 import 'package:story_ku/data/pref/token_pref.dart';
 import 'package:story_ku/provider/list_story_provider.dart';
 import 'package:story_ku/routes/list_page_manager.dart';
-import 'package:story_ku/routes/location_page_manager.dart';
 import 'package:story_ku/util/enums.dart';
 import 'package:story_ku/util/helper.dart';
 import 'package:story_ku/widget/centered_loading.dart';

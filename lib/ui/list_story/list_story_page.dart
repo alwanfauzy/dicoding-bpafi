@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:story_ku/common.dart';
@@ -141,10 +142,12 @@ class _ListStoryPageState extends State<ListStoryPage> {
   }
 
   Widget _gridStories(BuildContext context, List<Story> stories) {
+    const columnCount = 2;
+
     return GridView.builder(
       padding: const EdgeInsets.all(16),
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2,
+        crossAxisCount: columnCount,
         crossAxisSpacing: 4,
         mainAxisSpacing: 4,
       ),
@@ -152,9 +155,19 @@ class _ListStoryPageState extends State<ListStoryPage> {
       itemCount: stories.length + (hasMoreData ? 1 : 0),
       itemBuilder: (context, index) {
         if (index < stories.length) {
-          return StoryItem(
-            story: stories[index],
-            onStoryClicked: () => widget.onStoryClicked(stories[index].id),
+          return AnimationConfiguration.staggeredGrid(
+            position: index,
+            duration: const Duration(milliseconds: 200),
+            columnCount: columnCount,
+            child: ScaleAnimation(
+              child: FadeInAnimation(
+                child: StoryItem(
+                  story: stories[index],
+                  onStoryClicked: () =>
+                      widget.onStoryClicked(stories[index].id),
+                ),
+              ),
+            ),
           );
         } else if (hasMoreData) {
           return const CenteredLoading();

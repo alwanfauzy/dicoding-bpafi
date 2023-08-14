@@ -1,0 +1,31 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "storyku (Free)",
+            "request": "launch",
+            "type": "dart",
+            "program": "lib/main_free.dart",
+            "args": ["-t", "lib/main_free.dart"]
+        },
+        {
+            "name": "storyku (Premium)",
+            "request": "launch",
+            "type": "dart",
+            "program": "lib/main_paid.dart",
+            "args": ["-t", "lib/main_paid.dart"]
+        },
+        {
+            "name": "storyku (profile mode)",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "storyku (release mode)",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        }
+    ]
+}

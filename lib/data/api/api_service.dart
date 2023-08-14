@@ -21,7 +21,7 @@ class ApiService {
       Uri.parse("$_baseUrl/stories?page=$page&size=$size");
   Uri _detailStoryEndpoint(String id) => Uri.parse("$_baseUrl/stories/$id");
   Uri _geofenceEndpoint(LatLng location) => Uri.parse(
-      "https://maps.googleapis.com/maps/api/geocode/json?latlng=${location.latitude},${location.longitude}&key=AIzaSyBdp_PyaGP8pCjyzgcmA496i03zz39moUY");
+      "https://geocode.maps.co/reverse?lat=${location.latitude}&lon=${location.longitude}");
 
   Future<Login> login(LoginRequest request) async {
     final response = await http
@@ -118,10 +118,7 @@ class ApiService {
 
     if (_isResponseSuccess(response.statusCode)) {
       final data = json.decode(response.body);
-      if (data['status'] == 'OK' && data['results'].isNotEmpty) {
-        return data['results'][0]['formatted_address'];
-      }
-      return "Address not found";
+      return data["display_name"];
     } else {
       throw Exception("${response.statusCode} - Cannot get address");
     }

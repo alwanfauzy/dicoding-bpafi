@@ -3,7 +3,7 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:story_ku/common.dart';
 import 'package:story_ku/data/api/api_service.dart';
-import 'package:story_ku/data/model/detail_story.dart';
+import 'package:story_ku/data/model/story.dart';
 import 'package:story_ku/data/pref/token_pref.dart';
 import 'package:story_ku/provider/list_story_provider.dart';
 import 'package:story_ku/routes/list_page_manager.dart';

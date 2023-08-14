@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:story_ku/data/api/api_service.dart';
-import 'package:story_ku/data/model/detail_story.dart';
+import 'package:story_ku/data/model/story.dart';
 import 'package:story_ku/util/enums.dart';
 
 class DetailStoryProvider extends ChangeNotifier {

@@ -3,7 +3,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:story_ku/common.dart';
 import 'package:story_ku/data/api/api_service.dart';
-import 'package:story_ku/data/model/detail_story.dart';
+import 'package:story_ku/data/model/story.dart';
 import 'package:story_ku/provider/detail_story_provider.dart';
 import 'package:story_ku/provider/map_provider.dart';
 import 'package:story_ku/util/enums.dart';

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:story_ku/data/model/detail_story.dart';
+import 'package:story_ku/data/model/story.dart';
 
 class StoryItem extends StatelessWidget {
   final Story story;

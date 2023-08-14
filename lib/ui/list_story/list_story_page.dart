@@ -34,6 +34,7 @@ class _ListStoryPageState extends State<ListStoryPage> {
   final _refreshKey = GlobalKey<RefreshIndicatorState>();
   final _scrollController = ScrollController();
   late ListStoryProvider _listStoryProvider;
+  bool hasMoreData = true;
 
   @override
   void initState() {
@@ -113,6 +114,8 @@ class _ListStoryPageState extends State<ListStoryPage> {
   Widget _handleListStoryState(ListStoryProvider provider) {
     switch (provider.state) {
       case ResultState.noData:
+        hasMoreData = false;
+        return _content(context, provider);
       case ResultState.loading:
       case ResultState.hasData:
         return _content(context, provider);
@@ -146,15 +149,17 @@ class _ListStoryPageState extends State<ListStoryPage> {
         mainAxisSpacing: 4,
       ),
       controller: _scrollController,
-      itemCount: stories.length + 1,
+      itemCount: stories.length + (hasMoreData ? 1 : 0),
       itemBuilder: (context, index) {
         if (index < stories.length) {
           return StoryItem(
             story: stories[index],
             onStoryClicked: () => widget.onStoryClicked(stories[index].id),
           );
-        } else {
+        } else if (hasMoreData) {
           return const CenteredLoading();
+        } else {
+          return const SizedBox();
         }
       },
     );

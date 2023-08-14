@@ -8,26 +8,39 @@ import 'package:story_ku/provider/localization_provider.dart';
 import 'package:story_ku/routes/list_page_manager.dart';
 import 'package:story_ku/routes/location_page_manager.dart';
 import 'package:story_ku/routes/router_delegate.dart';
+import 'package:story_ku/util/enums.dart';
+import 'package:story_ku/util/flavor_config.dart';
+import 'package:story_ku/util/flavor_values.dart';
 
 import 'common.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  initializeCerts();
-  final theme = await initializeTheme();
+  _initializeFlavor();
+  _initializeCerts();
+  final theme = await _initializeTheme();
 
   runApp(MyApp(theme: theme));
 }
 
-Future<void> initializeCerts() async {
+_initializeFlavor() {
+  FlavorConfig(
+    flavor: FlavorType.paid,
+    values: const FlavorValues(
+      isLocationEnabled: true,
+    ),
+  );
+}
+
+Future<void> _initializeCerts() async {
   ByteData data =
       await PlatformAssetBundle().load('assets/ca/lets-encrypt-r3.pem');
   SecurityContext.defaultContext
       .setTrustedCertificatesBytes(data.buffer.asUint8List());
 }
 
-Future<ThemeData?> initializeTheme() async {
+Future<ThemeData?> _initializeTheme() async {
   final themeStr = await rootBundle.loadString('assets/storyku_theme.json');
   final themeJson = jsonDecode(themeStr);
   final theme = ThemeDecoder.decodeThemeData(themeJson);

@@ -11,6 +11,7 @@ import 'package:story_ku/provider/add_story_provider.dart';
 import 'package:story_ku/routes/list_page_manager.dart';
 import 'package:story_ku/routes/location_page_manager.dart';
 import 'package:story_ku/util/enums.dart';
+import 'package:story_ku/util/flavor_config.dart';
 import 'package:story_ku/util/helper.dart';
 import 'package:story_ku/widget/primary_button.dart';
 import 'package:story_ku/widget/safe_scaffold.dart';
@@ -142,22 +143,24 @@ class _AddStoryPageState extends State<AddStoryPage> {
             ),
           ),
           const SizedBox(height: 8),
-          SecondaryButton(
-            text: (_selectedLocation != null)
-                ? AppLocalizations.of(context)!.locationLatLng(
-                    _selectedLocation!.latitude, _selectedLocation!.longitude)
-                : AppLocalizations.of(context)!.titleAddLocation,
-            onPressed: () async {
-              widget.onAddLocationClicked();
-              final locationManager = context.read<LocationPageManager>();
-              var result = await locationManager.waitForResult();
+          if (FlavorConfig.instance.values.isLocationEnabled) ...[
+            SecondaryButton(
+              text: (_selectedLocation != null)
+                  ? AppLocalizations.of(context)!.locationLatLng(
+                      _selectedLocation!.latitude, _selectedLocation!.longitude)
+                  : AppLocalizations.of(context)!.titleAddLocation,
+              onPressed: () async {
+                widget.onAddLocationClicked();
+                final locationManager = context.read<LocationPageManager>();
+                var result = await locationManager.waitForResult();
 
-              setState(() {
-                _selectedLocation = result;
-              });
-            },
-          ),
-          const SizedBox(height: 8),
+                setState(() {
+                  _selectedLocation = result;
+                });
+              },
+            ),
+            const SizedBox(height: 8),
+          ],
           Consumer<AddStoryProvider>(builder: (context, provider, _) {
             _handleAddStoryState(provider);
 

@@ -56,10 +56,23 @@ class DetailStoryPage extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        if (story.photoUrl != null) _image(context, story.photoUrl!),
-        _information(context, story),
+        _detail(context, story),
         if (story.lat != null) _map(context, LatLng(story.lat!, story.lon!)),
       ],
+    );
+  }
+
+  Widget _detail(BuildContext context, Story story) {
+    return SizedBox(
+      height: MediaQuery.of(context).size.height / 2,
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            if (story.photoUrl != null) _image(context, story.photoUrl!),
+            _information(context, story),
+          ],
+        ),
+      ),
     );
   }
 
@@ -87,8 +100,6 @@ class DetailStoryPage extends StatelessWidget {
           ),
           Text(
             story.description ?? "-",
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
             style: Theme.of(context).textTheme.bodyLarge,
           ),
         ],
